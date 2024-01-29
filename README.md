@@ -1,2 +1,1 @@
-# ESPHome
-ESPHome
+Coming Soon
