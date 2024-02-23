@@ -1,0 +1,240 @@
+################################################################################
+# Notes: This is for the Sonoff Basic R2
+# Based on https://devices.esphome.io/devices/Sonoff-BASIC-R2-v1.4 
+################################################################################
+# Substitution Variables
+################################################################################
+substitutions:
+  device_internal_name: esphome_sonoff_basic_2
+  device_wifi_name: esphome-sonoff-basic-2
+  device_friendly_name: ESPHome Sonoff Basic 2
+  device_ip_address: 192.168.0.xxx
+  device_sampling_time: 30s
+
+################################################################################
+# Globals
+################################################################################
+globals: ##to set default reboot behavior
+  - id: wifi_connection
+    type: bool
+    restore_value: no
+    initial_value: "false"
+
+################################################################################
+# Board Configuration
+################################################################################
+esphome:
+  name: ${device_internal_name}
+  friendly_name: ${device_friendly_name}
+
+esp8266:
+  board: esp01_1m
+
+################################################################################
+# Enable logging
+################################################################################
+logger:
+
+################################################################################
+# Enable Home Assistant API
+################################################################################
+api:
+  reboot_timeout: 0s
+  encryption:
+    key: !secret api_encryption_key
+
+################################################################################
+# OTA
+################################################################################
+ota:
+  safe_mode: true
+  reboot_timeout: 10min
+  num_attempts: 5
+  password: !secret web_server_password
+
+################################################################################
+# WiFi
+################################################################################
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+  manual_ip:
+    static_ip: ${device_ip_address}
+    gateway: !secret gateway_address
+    subnet: !secret subnet_address
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: ${device_wifi_name}
+    password: !secret web_server_password
+
+captive_portal:
+
+################################################################################
+# Web Server
+################################################################################
+web_server:
+  port: 80
+  version: 2
+  include_internal: true
+  auth:
+    username: !secret web_server_user
+    password: !secret web_server_password
+  local: true
+
+################################################################################
+# Status led
+################################################################################
+status_led:
+  pin:
+    number: GPIO2
+    inverted: false
+
+################################################################################
+# Time
+################################################################################
+time:
+  - platform: homeassistant
+
+################################################################################
+# Binary Sensors
+################################################################################
+binary_sensor:
+  # ESP Status
+  - platform: status
+    name: "Status"
+    id: ${device_internal_name}_status
+  
+  - platform: gpio
+    id: ${device_internal_name}_push_button
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    internal: true
+    on_press:
+      # Prevents unintended LED lit states.
+      if:
+        condition:
+          - switch.is_off: ${device_internal_name}_relay
+        then:
+          - switch.turn_on: blue_led
+          - switch.turn_on: ${device_internal_name}_relay
+        else:
+          - switch.turn_off: ${device_internal_name}_relay
+
+################################################################################
+# Sensors
+################################################################################
+sensor:
+  #-------------------------------------------------------------------------------
+  # ESP Generic Sensors
+  #-------------------------------------------------------------------------------
+  
+  # WiFi
+  - platform: wifi_signal
+    name: "WiFi Signal Sensor"
+    id: ${device_internal_name}_wifi_signal_sensor
+    update_interval: ${device_sampling_time}
+
+  # Uptime
+  - platform: uptime
+    name: "Uptime Sensor"
+    id: ${device_internal_name}_uptime_sensor
+    update_interval: ${device_sampling_time}
+    internal: true
+    on_raw_value:
+      then:
+        - text_sensor.template.publish:
+            id: ${device_internal_name}_uptime_human
+            state: !lambda |-
+              int seconds = round(id(${device_internal_name}_uptime_sensor).raw_state);
+              int days = seconds / (24 * 3600);
+              seconds = seconds % (24 * 3600);
+              int hours = seconds / 3600;
+              seconds = seconds % 3600;
+              int minutes = seconds /  60;
+              seconds = seconds % 60;
+              return (
+                (days ? to_string(days) + "d " : "") +
+                (hours ? to_string(hours) + "h " : "") +
+                (minutes ? to_string(minutes) + "m " : "") +
+                (to_string(seconds) + "s")
+              ).c_str();
+    
+################################################################################
+# Text Sensors
+################################################################################
+text_sensor:
+  #-------------------------------------------------------------------------------
+  # ESP32 internal sensors
+  #-------------------------------------------------------------------------------
+  - platform: wifi_info
+    ip_address:
+      name: IP Address
+      id: ${device_internal_name}_ip_address
+    ssid:
+      name: Connected SSID
+      id: ${device_internal_name}_connected_ssid
+    mac_address:
+      name: Mac Wifi Address
+      id: ${device_internal_name}_mac_address
+
+  - platform: version
+    name: "ESPHome Version"
+    hide_timestamp: true
+
+  #-------------------------------------------------------------------------------
+  # Custom Text sensors
+  #-------------------------------------------------------------------------------
+  - platform: template
+    name: Uptime Human Readable
+    id: ${device_internal_name}_uptime_human
+    icon: mdi:clock-start
+
+################################################################################
+# Switch
+################################################################################
+switch:
+  - platform: restart
+    name: "Restart"
+    id: device_restart
+  
+  - platform: safe_mode
+    name: Use Safe Mode
+    id: device_safe_mode
+
+  # The relay switches on the red side of the LED when active.
+  - platform: gpio
+    name: "Relay"
+    pin: GPIO12
+    id: ${device_internal_name}_relay
+    on_turn_off:
+      if:
+        condition:
+          - switch.is_on: blue_led
+        then:
+          - switch.turn_off: blue_led
+
+  # With this we can control the blue side of the LED.
+  - platform: gpio
+    id: blue_led
+    pin:
+      number: GPIO13
+      inverted: True
+
+################################################################################
+# Interval
+################################################################################
+interval:
+  - interval: 10s
+    then:
+      - if:
+          condition:
+            wifi.connected:
+          then:
+            - lambda: |-
+                id(wifi_connection) = true;
+          else:
+            - lambda: |-
+                id(wifi_connection) = false;
