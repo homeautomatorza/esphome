@@ -1,0 +1,14 @@
+################################################################################
+# Bluetooth
+################################################################################
+bluetooth_proxy:
+  active: true
+  #cache_services: true
+
+# Bluetooth Low Energy Tracker Hub
+esp32_ble_tracker:
+  id: ${device_internal_name}_ble_tracker
+  scan_parameters:
+    interval: 1100ms
+    window: 1100ms
+    active: true

@@ -1,0 +1,11 @@
+  # DHT22 
+  - platform: dht
+    pin: GPIO26
+    temperature:
+      name: "Temperature"
+      id: ${device_internal_name}_temperature
+    humidity:
+      name: "Humidity"
+      id: ${device_internal_name}_humidity
+    model: DHT22
+    update_interval: ${device_sampling_time}
