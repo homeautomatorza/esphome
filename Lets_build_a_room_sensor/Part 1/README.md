@@ -1,3 +1,5 @@
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B7VM3UP)
+
 # ESPHome, Let's build a room sensor, Part 1
 
 In this video we will add the Bluetooth Proxy functionality to our Basic Setup as well as have a discussion around the Bluetooth Low Energy sensors, then add a DHT22 Temperature and Humidity sensor.
@@ -24,3 +26,8 @@ In this video we will add the Bluetooth Proxy functionality to our Basic Setup a
 
 - NodeMCU documentation: https://docs.ai-thinker.com/_media/esp32/docs/nodemcu-32s_product_specification.pdf
 - Sparkfun DHT22 Datasheet https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf
+
+You can support me by
+▶ Buying me a tea @ https://www.buymeacoffee.com/homeautomatorza
+▶ Buying me coffee @ https://ko-fi.com/homeautomatorza
+▶ On Patreon @ https://www.patreon.com/homeautomatorza
