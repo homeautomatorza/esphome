@@ -1,4 +1,3 @@
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B7VM3UP)
 # ESPHome, Let's build a room sensor, Part 2
 
 In this video we will dive into a bit of I2C and add a BH1750 Light Sensor Module
