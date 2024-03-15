@@ -4,7 +4,7 @@ In this video we will dive into a bit of I2C and add a BH1750 Light Sensor Modul
 
 ## Video
 
-[![Watch the video](/Lets_build_a_room_sensor/Part%201/Images/YouTube%20Thumbnail%20-%20ESPHome%20-%20Let's%20build%20a%20room%20sensor%20-%20Part%201%20-%20Bluetooth%20proxy%20and%20the%20DHT%2022.png)](https://youtu.be/D9veJLKqnpg)
+[![Watch the video](/Lets_build_a_room_sensor/Part%202/Images/Let's%20build%20a%20room%20sensor%20-%20Part%202%20-%20BH1750%20I2C%20Light%20Sensor.png)](https://youtu.be/U4Ja7jZ9PFM)
 
 ## Bill of Materials
 
