@@ -4,7 +4,7 @@ In this video, we are exploring eCO2 and TVOC and adding these sensors to our pr
 
 ## Video
 
-[![Watch the video](/Lets_build_a_room_sensor/Part%202/Images/Let's%20build%20a%20room%20sensor%20-%20Part%202%20-%20BH1750%20I2C%20Light%20Sensor.png)](https://youtu.be/U4Ja7jZ9PFM)
+[![Watch the video](/Part%203/Images/Home-Automator-Thumbnail.png)](https://youtu.be/rWXk9ZWA1a4?si=zo70sz3tVgois6RE)
 
 ## Bill of Materials
 
