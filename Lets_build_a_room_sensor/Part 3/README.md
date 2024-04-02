@@ -68,6 +68,40 @@ ESPHome Reference page [ESPhome I2C Bus](https://esphome.io/components/i2c)
       humidity: ${device_internal_name}_humidity
       update_interval: ${device_sampling_time}
 
+### The code for the horseshoe card
+    type: custom:flex-horseshoe-card
+    entities:
+      - entity: sensor.esphome_room_sensors_eco2
+        decimals: 1
+        unit: ppm
+        area: My Room eCO2
+    show:
+      horseshoe_style: lineargradient
+    layout:
+      states:
+        - id: 0
+          entity_index: 0
+          xpos: 50
+          ypos: 60
+          styles:
+            - font-size: 3.5em;
+      areas:
+        - id: 0
+          entity_index: 0
+          xpos: 50
+          ypos: 35
+          styles:
+            - font-size: 1.5em;
+            - opacity: 0.8;
+    horseshoe_scale:
+      min: 0
+      max: 6000
+    color_stops:
+      '400': '#07F67F'
+      '1000': '#074F2B'
+      '2000': '#E21B63'
+      '5000': '#DC1F3C'
+
 ESPHome Reference page [ESPHome SGP30 I2C Ambient Light Sensor Module Page](https://www.esphome.io/components/sensor/sgp30.html)   
 ESPHome Reference page [ESPHome CCS811 I2C Ambient Light Sensor Module Page](https://www.esphome.io/components/sensor/ccs811.html)
 
