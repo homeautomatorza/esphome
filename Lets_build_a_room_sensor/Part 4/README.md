@@ -18,7 +18,11 @@ Find the simulator documentation [here](/Lets_build_a_room_sensor/Part%204/Simul
     - [South Africa - Micro Robotics](https://www.robotics.org.za/index.php?route=product/product&product_id=1477)
     - [US - Amazon](https://www.amazon.com/EDGELEC-Breadboard-Optional-Assorted-Multicolored/dp/B07GD2BWPY)
     - [Global - Aliexpress](https://www.aliexpress.com/item/1005002984683377.html)
-    
+
+## Circuit Diagram
+
+![Circuit Diagram](/Lets_build_a_room_sensor/Part%204/Images/Room%20Sensor%20Package%204.png)
+
 ## Code
 
 ### GPIO Binary sensor code
