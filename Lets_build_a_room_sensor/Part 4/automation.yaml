@@ -1,0 +1,27 @@
+alias: "ESPHome Capacitive Switch Light On and Off "
+description: ""
+trigger:
+  - type: turned_on
+    platform: device
+    device_id: esphome_room_sensors
+    entity_id: esphome_room_sensors_capacitive_light_switch
+    domain: binary_sensor
+condition: []
+action:
+  - if:
+      - condition: device
+        type: is_on
+        device_id: esphome_device_simulator
+        entity_id: esphome_device_simulator_simulated_light
+        domain: light
+    then:
+      - type: turn_off
+        device_id: esphome_device_simulator
+        entity_id: esphome_device_simulator_simulated_light
+        domain: light
+    else:
+      - type: turn_on
+        device_id: esphome_device_simulator
+        entity_id: esphome_device_simulator_simulated_light
+        domain: light
+mode: single
