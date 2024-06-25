@@ -1,0 +1,31 @@
+alias: ESPHome Movement Detected
+description: ""
+trigger:
+  - type: motion
+    platform: device
+    device_id: esphome_room_sensors
+    entity_id: binary_sensor.esphome_room_sensors_movement
+    domain: binary_sensor
+condition: []
+action:
+  - type: turn_on
+    device_id: esphome_device_simulator
+    entity_id: esphome_device_simulator_simulated_light
+    domain: light
+mode: single
+
+alias: ESPHome Movement Not Detected
+description: ""
+trigger:
+  - type: no_motion
+    platform: device
+    device_id: esphome_room_sensors
+    entity_id: binary_sensor.esphome_room_sensors_movement
+    domain: binary_sensor
+condition: []
+action:
+  - type: turn_off
+    device_id: esphome_device_simulator
+    entity_id: esphome_device_simulator_simulated_light
+    domain: light
+mode: single
