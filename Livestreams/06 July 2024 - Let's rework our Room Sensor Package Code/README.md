@@ -4,7 +4,7 @@ In this livestream, my guest Steve and myself moduralized our code and used adve
 
 ## Video
 
-[![Watch the video](../images/Home-Automator-Background-Q&A-Green.png)](https://youtube.com/live/52_ZJmTz3bs)
+[![Watch the video](../images/Home-Automator-Background-Q&A-Green-Recovered.png)](https://youtube.com/live/52_ZJmTz3bs)
 
 ## Code
 
