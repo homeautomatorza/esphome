@@ -4,7 +4,7 @@ In this livestream, my guest Steve and myself moduralized our code and used adve
 
 ## Video
 
-Coming soon
+[![Watch the video]()](https://youtube.com/live/52_ZJmTz3bs)
 
 ## Code
 
