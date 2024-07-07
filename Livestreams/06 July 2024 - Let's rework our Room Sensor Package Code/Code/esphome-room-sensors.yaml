@@ -1,0 +1,44 @@
+################################################################################
+# Substitution Variables
+################################################################################
+substitutions:
+  device_internal_name: esphome_room_sensors
+  device_wifi_name: esphome-room-sensors
+  device_friendly_name: ESPHome Room Sensors
+  device_ip_address: 192.168.0.226
+  device_sampling_time: 30s
+
+################################################################################
+# Common Packages
+################################################################################
+packages:
+  # Include ESPHome Board Configuration 
+  # version: 2.0.9
+  board: !include boards/esp32_s_nodemcu.yaml
+
+  # Include Common ESPHome definitions
+  settings: !include common/settings.yaml
+
+  # Include WiFi Definition
+  wifi: !include common/wifi.yaml
+
+  # Include Web Server Definition
+  webserver: !include common/webserver.yaml
+
+  bh1750: !include 
+    file: sensors/bh1750.yaml
+    vars:
+      address: 0x23
+
+  dht22: !include 
+    file: sensors/dht22.yaml
+    vars:
+      data_pin: GPIO26
+      model: DHT22
+
+################################################################################
+# Board Configuration
+################################################################################
+esphome:
+  name: ${device_internal_name}
+  friendly_name: ${device_friendly_name}

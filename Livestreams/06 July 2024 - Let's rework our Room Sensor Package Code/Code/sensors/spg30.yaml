@@ -1,0 +1,31 @@
+################################################################################
+# SPG30 eCO2 and TVOC Air Quality Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# 
+# packages:
+#  i2c: !include 
+#    file: sensors/sgp30yaml
+#    vars:
+#      address: 0x58
+#      
+################################################################################
+sensor:
+  - platform: sgp30
+    eco2:
+      name: "eCO2"
+      id: ${device_internal_name}_eco2 
+      accuracy_decimals: 1
+    tvoc:
+      name: "TVOC"
+      id: ${device_internal_name}_tvoc
+      accuracy_decimals: 1
+    store_baseline: yes
+    address: ${address}
+    compensation:
+      temperature_source: ${device_internal_name}_temperature
+      humidity_source: ${device_internal_name}_humidity
+    update_interval: ${device_sampling_time}

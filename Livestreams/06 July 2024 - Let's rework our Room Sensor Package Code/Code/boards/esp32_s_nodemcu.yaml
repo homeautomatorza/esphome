@@ -1,0 +1,48 @@
+################################################################################
+# Board Specific Configurations
+################################################################################
+esp32:
+  board: nodemcu-32s
+  framework:
+    type: arduino
+    version: latest
+
+# Status led
+status_led:
+  id: ${device_internal_name}_status_led
+  pin:
+    number: GPIO2
+    inverted: false
+
+# I2C settings
+i2c:
+  id: ${device_internal_name}_i2c_bus0
+  sda: GPIO21
+  scl: GPIO22
+  scan: true
+
+# UART
+uart:
+  id: ${device_internal_name}_uart_bus0
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 256000
+  parity: NONE
+  stop_bits: 1
+
+# SPI
+spi:
+  id: ${device_internal_name}_spi_bus0
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+  miso_pin: GPIO19
+  interface: hardware
+
+# Sensors
+sensor:
+  # Internal Temperature Sensor
+  - platform: internal_temperature
+    id: ${device_internal_name}_internal_temperature
+    name: "Internal Temperature"
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true

@@ -1,0 +1,105 @@
+################################################################################
+# Board Specific Configurations
+################################################################################
+# This specification file is specific to the ESP32 S3 N16R8 development board!
+# Do not try to use another!
+# ------------------------------------------------------------------------------
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: arduino
+    version: latest
+  flash_size: 16MB
+
+# Captive Portal
+captive_portal:
+
+# PSRAM
+psram:
+  mode: octal
+  speed: 80MHz
+
+# Status led
+status_led:
+  id: ${device_internal_name}_status_led
+  pin:
+    number: GPIO38
+    inverted: false
+
+# Internal LEDs
+light:
+  - platform: esp32_rmt_led_strip
+    id: ${device_internal_name}_onboard_rgb_led
+    name: Onboard RGB LED
+    rgb_order: GRB
+    pin: GPIO48
+    num_leds: 1
+    rmt_channel: 0
+    chipset: ws2812
+    disabled_by_default: true
+
+  - platform: binary
+    id: ${device_internal_name}_onboard_blue_led
+    name: Onboard Blue LED
+    output: light_output
+    disabled_by_default: true
+
+  - platform: status_led
+    id: ${device_internal_name}_onboard_green_led
+    name: Onboard Green LED
+    pin:
+      number: GPIO43
+      inverted: true
+    disabled_by_default: true
+
+# Output
+output:
+  - id: light_output
+    # this is the blue LED
+    platform: gpio
+    pin:
+      number: GPIO44
+      inverted: true
+
+# I2C settings
+i2c:
+  - id: ${device_internal_name}_i2c_bus0
+    sda: GPIO5
+    scl: GPIO4
+    scan: true
+  #- id: ${device_internal_name}_i2c_bus1
+  #  sda: GPIO8
+  #  scl: GPIO9
+  #  scan: true
+
+# UART
+uart:
+  - id: ${device_internal_name}_uart_bus0
+    tx_pin: GPIO17
+    rx_pin: GPIO18
+    baud_rate: 256000
+    parity: NONE
+    stop_bits: 1
+  #- id: ${device_internal_name}_uart_bus1
+  #  tx_pin: GPIO43
+  #  rx_pin: GPIO44
+  #  baud_rate: 256000
+  #  parity: NONE
+  #  stop_bits: 1
+
+# SPI
+spi:
+  id: ${device_internal_name}_spi_bus0
+  clk_pin: GPIO13
+  mosi_pin: GPIO11
+  miso_pin: GPIO12
+  interface: hardware
+
+# Sensors
+sensor:
+  # Internal Temperature Sensor
+  - platform: internal_temperature
+    id: ${device_internal_name}_internal_temperature
+    name: "Internal Temperature"
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true

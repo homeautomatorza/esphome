@@ -1,0 +1,104 @@
+################################################################################
+# Enable logging
+################################################################################
+logger:
+
+################################################################################
+# Enable Home Assistant API
+################################################################################
+api:
+  reboot_timeout: 0s
+  encryption:
+    key: !secret api_encryption_key
+
+################################################################################
+# OTA Settings
+################################################################################
+ota:
+  platform: esphome
+  password: !secret web_server_password
+
+safe_mode:
+  disabled: false
+  reboot_timeout: 10min
+  num_attempts: 5
+
+################################################################################
+# Time
+################################################################################
+time:
+  # Get the time from the connected Home Assistant Instance
+  - platform: homeassistant
+
+################################################################################
+# Binary Sensors
+################################################################################
+binary_sensor:
+  # ESP Status Sensor
+  - platform: status
+    id: ${device_internal_name}_status
+    name: "Status"
+    disabled_by_default: true
+
+################################################################################
+# Sensors
+################################################################################
+sensor:
+  # Human Readable Uptime Conversion Sensor
+  - platform: uptime
+    id: ${device_internal_name}_uptime_sensor
+    name: Uptime Sensor
+    on_raw_value:
+      then:
+        - text_sensor.template.publish:
+            id: ${device_internal_name}_uptime_human
+            state: !lambda |-
+              int seconds = round(id(${device_internal_name}_uptime_sensor).raw_state);
+              int days = seconds / (24 * 3600);
+              seconds = seconds % (24 * 3600);
+              int hours = seconds / 3600;
+              seconds = seconds % 3600;
+              int minutes = seconds /  60;
+              seconds = seconds % 60;
+              return (
+                (days ? to_string(days) + "d " : "") +
+                (hours ? to_string(hours) + "h " : "") +
+                (minutes ? to_string(minutes) + "m " : "") +
+                (to_string(seconds) + "s")
+              ).c_str();
+    internal: true
+    update_interval: ${device_sampling_time}
+
+################################################################################
+# Text Sensors
+################################################################################
+text_sensor:
+  # ESP32 Version Sensor
+  - platform: version
+    id: ${device_internal_name}_version
+    name: "ESPHome Version"
+    hide_timestamp: true
+    disabled_by_default: true
+
+  # Human Time Text Sensors
+  - platform: template
+    id: ${device_internal_name}_uptime_human
+    name: Uptime Human Readable
+    icon: mdi:clock-start
+    entity_category: diagnostic
+    disabled_by_default: true
+
+################################################################################
+# Switch
+################################################################################
+switch:
+  # Soft Restart the device
+  - platform: restart
+    id: ${device_internal_name}_device_restart
+    name: Restart
+
+  # Restart the device in Safe Mode
+  - platform: safe_mode
+    id: ${device_internal_name}_device_safe_mode
+    name: Use Safe Mode
+    disabled_by_default: true

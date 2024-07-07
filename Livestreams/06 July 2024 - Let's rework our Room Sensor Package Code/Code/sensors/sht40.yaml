@@ -1,0 +1,25 @@
+################################################################################
+# SHT40 Temperature and humidity sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# 
+# packages:
+#  i2c: !include 
+#    file: sensors/sht40.yaml
+#    vars:
+#      address: 0x44
+#      
+################################################################################
+sensor:
+  - platform: sht4x
+    temperature:
+      name: "SHT40 Temperature"
+      id: ${device_internal_name}_sht40_temperature
+    humidity:
+      name: "SHT40 Relative Humidity"
+      id: ${device_internal_name}_sht40_humidity
+    address: ${address}
+    update_interval: ${device_sampling_time}

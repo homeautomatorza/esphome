@@ -1,0 +1,97 @@
+################################################################################
+# Board Specific Configurations
+################################################################################
+esphome:
+  includes:
+  -  includes/picow_intLED.h
+
+rp2040:
+  board: rpipicow
+  framework:
+    # Required until https://github.com/platformio/platform-raspberrypi/pull/36 is merged
+    platform_version: https://github.com/maxgerhardt/platform-raspberrypi.git
+
+# Status led
+status_led:
+  pin:
+    number: GPIO32
+
+# I2C
+i2c:
+  id: ${device_internal_name}_i2c_bus0
+  sda: GPIO20
+  scl: GPIO21
+  scan: true
+
+# External Components 
+external_components:
+  source: github://pr#5466
+  components: [ spi ]
+
+# UART
+uart:
+  id: ${device_internal_name}_uart_bus0
+  tx_pin: GPIO16
+  rx_pin: GPIO17
+  baud_rate: 256000
+  parity: NONE
+  stop_bits: 1
+
+# SPI
+spi:
+  id: ${device_internal_name}_spi_bus0
+  clk_pin: GPIO10
+  mosi_pin: GPIO11
+  miso_pin: GPIO12
+
+# Sensors
+sensor:
+  # Internal Temperature Sensor
+  - platform: internal_temperature
+    id: ${device_internal_name}_internal_temperature
+    name: Ambient Temperature
+    update_interval: ${device_sampling_time}
+  
+  - platform: adc
+    pin: VCC
+    name: VCC Voltage
+    entity_category: diagnostic
+
+  - platform: adc
+    id: ${device_internal_name}_core_temperature
+    name: Internal Temperature
+    icon: mdi:thermometer
+    pin: TEMPERATURE
+    unit_of_measurement: "°C"
+    filters:
+      - lambda: return 27 - (x - 0.706f) / 0.001721f;
+    entity_category: diagnostic
+
+# Yellow LED
+# Credits: https://community.home-assistant.io/t/rpi-pico-w-onboard-temperature-sensor-and-onboard-led/564904/3
+output:
+  - platform: gpio
+    id: yellow_led
+    pin: GPIO15
+
+  - platform: custom
+    type: binary
+    lambda: |-
+      auto picowLED = new picow_intLED();
+      App.register_component(picowLED);
+      return {picowLED};
+    outputs:
+      id: picowLED
+
+light:
+  - platform: binary
+    name: "Yellow LED"
+    id: ${device_internal_name}_yellow_led_light
+    output: yellow_led
+    internal: true
+  
+  - platform: binary
+    name: "Internal LED"
+    id: ${device_internal_name}_intLED
+    output: picowLED
+    disabled_by_default: true

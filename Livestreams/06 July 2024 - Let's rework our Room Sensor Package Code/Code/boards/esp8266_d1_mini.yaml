@@ -1,0 +1,47 @@
+################################################################################
+# Board Specific Configurations
+################################################################################
+esp8266:
+  board: d1_mini
+  framework: 
+    #type: arduino
+    version: latest
+
+# Captive Portal
+captive_portal:
+
+# Status led
+status_led:
+  pin:
+    number: GPIO2
+    inverted: true
+
+# I2C settings
+i2c:
+  sda: GPIO4
+  scl: GPIO5
+  scan: true
+  id: ${device_internal_name}_i2c
+
+# UART
+uart:
+  id: ${device_internal_name}_uart_presence
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 256000
+  parity: NONE
+  stop_bits: 1
+
+# SPI
+spi:
+  mosi_pin: GPIO12
+  miso_pin: GPIO13
+  clk_pin: GPIO14
+  #cs_pin: GPIO15
+
+sensor:
+  - platform: adc
+    pin: VCC
+    name: "Chip Voltage"
+    entity_category: diagnostic
+    disabled_by_default: true

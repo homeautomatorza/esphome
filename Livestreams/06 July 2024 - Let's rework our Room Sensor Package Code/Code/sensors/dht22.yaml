@@ -1,0 +1,27 @@
+################################################################################
+# DTH11/22 Temperature and Humidity Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# 
+# packages:
+#  DTH22: !include 
+#    file: sensors/dht22.yaml
+#    vars:
+#      data_pin: GPIO26
+#      model: DHT22
+#      
+################################################################################
+sensor: 
+  - platform: dht
+    pin: ${data_pin}
+    temperature:
+      name: "Temperature"
+      id: ${device_internal_name}_temperature
+    humidity:
+      name: "Humidity"
+      id: ${device_internal_name}_humidity
+    model: ${model}
+    update_interval: ${device_sampling_time}

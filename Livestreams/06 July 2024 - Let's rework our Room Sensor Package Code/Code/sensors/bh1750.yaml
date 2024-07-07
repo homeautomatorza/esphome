@@ -1,0 +1,21 @@
+################################################################################
+# BH1750 Illuminence Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# 
+# packages:
+#  bh1750: !include 
+#    file: sensors/bh1750.yaml
+#    vars:
+#      address: 0x23
+#      
+################################################################################
+sensor:  
+  - platform: bh1750
+    name: Illuminance
+    id: ${device_internal_name}_illuminance
+    address: ${address}
+    update_interval: ${device_sampling_time}
