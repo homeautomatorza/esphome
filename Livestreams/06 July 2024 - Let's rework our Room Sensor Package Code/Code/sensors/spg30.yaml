@@ -7,7 +7,7 @@
 # -----------------------------------------------------------------------------
 # 
 # packages:
-#  i2c: !include 
+#  spg30: !include 
 #    file: sensors/sgp30yaml
 #    vars:
 #      address: 0x58

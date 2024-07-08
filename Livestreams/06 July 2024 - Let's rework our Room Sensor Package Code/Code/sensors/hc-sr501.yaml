@@ -7,7 +7,7 @@
 # -----------------------------------------------------------------------------
 # 
 # packages:
-#  i2c: !include 
+#  hc-sr501: !include 
 #    file: sensors/hc-sr501.yaml
 #    vars:
 #      pin: GPIO14

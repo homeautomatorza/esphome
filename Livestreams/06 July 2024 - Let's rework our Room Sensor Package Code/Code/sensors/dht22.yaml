@@ -7,7 +7,7 @@
 # -----------------------------------------------------------------------------
 # 
 # packages:
-#  DTH22: !include 
+#  dht22: !include 
 #    file: sensors/dht22.yaml
 #    vars:
 #      data_pin: GPIO26

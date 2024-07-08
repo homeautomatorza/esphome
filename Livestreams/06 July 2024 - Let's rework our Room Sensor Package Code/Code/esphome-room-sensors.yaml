@@ -2,9 +2,9 @@
 # Substitution Variables
 ################################################################################
 substitutions:
-  device_internal_name: esphome_room_sensors
-  device_wifi_name: esphome-room-sensors
-  device_friendly_name: ESPHome Room Sensors
+  device_internal_name: esphome_study_sensors
+  device_wifi_name: esphome-study-sensors
+  device_friendly_name: ESPHome Study Sensors
   device_ip_address: 192.168.0.226
   device_sampling_time: 30s
 
@@ -25,16 +25,28 @@ packages:
   # Include Web Server Definition
   webserver: !include common/webserver.yaml
 
+  # Include BH1750
   bh1750: !include 
     file: sensors/bh1750.yaml
     vars:
       address: 0x23
 
+  # Include DHT22
   dht22: !include 
     file: sensors/dht22.yaml
     vars:
       data_pin: GPIO26
       model: DHT22
+  
+  hc-sr501: !include 
+    file: sensors/hc-sr501.yaml
+    vars:
+      pin: GPIO14
+
+  sgp30: !include 
+    file: sensors/spg30.yaml
+    vars:
+      address: 0x58
 
 ################################################################################
 # Board Configuration

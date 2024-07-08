@@ -7,7 +7,7 @@
 # -----------------------------------------------------------------------------
 # 
 # packages:
-#  i2c: !include 
+#  sht40: !include 
 #    file: sensors/sht40.yaml
 #    vars:
 #      address: 0x44
