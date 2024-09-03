@@ -6,7 +6,7 @@ In this tutorial, we will discuss the standard common modules, settings, wi-fi, 
 
 ## Video
 
-[![Watch the video](/Coding_Practices_Tips_and_Tricks/3_our_first_device/images/Thumbnail.jpg)](https://youtu.be/___CvvfPEt4)
+[![Watch the video](images/Thumbnail.jpg)](https://youtu.be/___CvvfPEt4)
 
 ## Code
 
