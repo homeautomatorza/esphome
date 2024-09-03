@@ -1,4 +1,4 @@
-# ESPHome, Let's build a room sensor, Part 6
+# ESPHome, Coding practices, tips and tricks, Tutorial 1, Foundation
 
 This series of tutorials is specifically designed for intermediate ESPHome users who have already completed my tutorial on "Creating a Room Sensor from Scratch" and are looking to take their skills to the next level.
 
@@ -10,11 +10,11 @@ In this tutorial, we will discuss modularising our code and the standards and co
 
 ### Part 1
 
-[![Watch the video](/Coding_Practices_Tips_and_Tricks/images/Splash_Screen_1_1.jpg)](https://youtu.be/G9WRg6jk7xk)
+[![Watch the video](/Coding_Practices_Tips_and_Tricks/1_foundation/images/Splash_Screen_1_1.jpg)](https://youtu.be/G9WRg6jk7xk)
 
 ### Part 2
 
-[![Watch the video](/Coding_Practices_Tips_and_Tricks/images/Splash_Screen_1_2.jpg)](https://youtu.be/G9WRg6jk7xk)
+[![Watch the video](/Coding_Practices_Tips_and_Tricks/1_foundation/images/Splash_Screen_1_2.jpg)](https://youtu.be/Qx6hqZh4Y9s)
 
 ## Code standardisation by ChatGPT
 
