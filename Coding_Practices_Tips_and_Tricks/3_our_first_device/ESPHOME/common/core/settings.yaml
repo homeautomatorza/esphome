@@ -1,0 +1,124 @@
+################################################################################
+# Hardware: DTH11/22 Temperature and Humidity Sensor
+################################################################################
+# Tutorial:     https://youtu.be/D9veJLKqnpg
+# -----------------------------------------------------------------------------  
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   board: !include common/core/settings.yaml
+# -----------------------------------------------------------------------------      
+# Notes:
+#     - Uses the following substitutions from the project file:
+#       - device_friendly_name   
+#       - device_internal_name
+#       - device_sampling_time
+#       - region
+#     - Uses the following from the secrets file:
+#       - api_encryption_key
+#       - web_server_password
+# -----------------------------------------------------------------------------      
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Use at your own risks!
+################################################################################
+
+# ----------------------------------------------------------------------------- 
+# Board Configuration
+esphome:
+  name: ${device_internal_name}
+  friendly_name: ${device_friendly_name}
+
+# ----------------------------------------------------------------------------- 
+# Enable logging
+logger:
+
+# ----------------------------------------------------------------------------- 
+# Enable time syncronisation from Home Assistant
+time:
+  - platform: homeassistant
+    id: ${device_internal_name}_internal_time
+    timezone: ${region}
+
+# ----------------------------------------------------------------------------- 
+# Enable Home Assistant API
+api:
+  id: ${device_internal_name}_ha_api
+  encryption:
+    key: !secret api_encryption_key
+  reboot_timeout: 0s
+
+# ----------------------------------------------------------------------------- 
+# OTA Settings
+ota:
+  platform: esphome
+  password: !secret web_server_password
+
+# ----------------------------------------------------------------------------- 
+# Safe Mode
+safe_mode:
+  disabled: false
+  reboot_timeout: 10min
+  num_attempts: 5
+
+# -----------------------------------------------------------------------------
+# Network Settings
+mdns:
+  disabled: false # Ensure mDNS is enabled
+
+# Disable IPV6
+network:
+    enable_ipv6: false
+
+# ----------------------------------------------------------------------------- 
+# Binary Sensors
+binary_sensor:
+  # ESP Status Sensor
+  - platform: status
+    id: ${device_internal_name}_status
+    name: Status
+    icon: mdi:network-pos
+    disabled_by_default: true
+
+# ----------------------------------------------------------------------------- 
+# Sensors
+sensor:
+  # Human Readable Uptime Conversion Sensor
+  - platform: uptime
+    id: ${device_internal_name}_uptime_sensor
+    name: Uptime Sensor
+    update_interval: ${device_sampling_time}
+
+# ----------------------------------------------------------------------------- 
+# Text Sensors
+text_sensor:
+  # ESP32 Version Sensor
+  - platform: version
+    id: ${device_internal_name}_version
+    name: ESPHome Version
+    hide_timestamp: true
+    disabled_by_default: true
+
+# ----------------------------------------------------------------------------- 
+# Switch
+switch:
+  # Soft Restart the device
+  - platform: restart
+    id: ${device_internal_name}_device_restart
+    name: Restart
+
+  # Restart the device in Safe Mode
+  - platform: safe_mode
+    id: ${device_internal_name}_device_safe_mode
+    name: Use Safe Mode
+    disabled_by_default: true
+
+
+

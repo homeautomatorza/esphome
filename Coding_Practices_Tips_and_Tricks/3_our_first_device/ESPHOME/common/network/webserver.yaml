@@ -1,0 +1,40 @@
+################################################################################
+# Web Server Common Component for ESP32
+################################################################################
+# Tutorial:     https://youtu.be/
+# Reference(s): https://esphome.io/components/web_server.html
+# ------------------------------------------------------------------------------  
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   board: !include common/network/webserver.yaml
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Requires either WiFi or Ethernet to be enabled on the board
+#     - Uses the following from the secrets file:
+#       - web_server_user
+#       - web_server_password
+#     - On low SRAM or PSRAM boards, avoid using the Web Server with Bluetooth,
+#       or Voice Assistant, it may cause instability or reboot loops, 
+#       rather switch the radio off.
+# ------------------------------------------------------------------------------     
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Use at your own risks!
+################################################################################
+
+web_server:
+  port: 80
+  version: 3
+  include_internal: true
+  auth:
+    username: !secret web_server_user
+    password: !secret web_server_password
+  local: true

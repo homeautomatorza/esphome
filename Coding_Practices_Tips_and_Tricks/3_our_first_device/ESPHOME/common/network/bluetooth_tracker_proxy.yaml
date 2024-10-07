@@ -1,0 +1,45 @@
+################################################################################
+# WiFi Common Component for ESP32
+################################################################################
+# Tutorial:     https://youtu.be/
+# Reference(s):
+#         - https://esphome.io/components/esp32_ble.html
+#         - https://esphome.io/components/esp32_ble_tracker.html 
+#         - https://esphome.io/components/bluetooth_proxy.html
+# ------------------------------------------------------------------------------  
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   board: !include common/network/bluetooth_tracker_proxy.yaml
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Enables the Bluetooth Radio, Low Energy Tracker Hub and the Bluetooth
+#       Proxy.
+#     - Not compatible with the ESP8266 or the Raspberry Pi Pico or any boards 
+#       without Bluetooth.
+#     - If you want to reduce power consumption you can disable the Bluetooth
+#       radio by using the bluetooth_off.yaml in this directory
+#     - On low SRAM or PSRAM boards, avoid using bluetooth with the Web Server,
+#       or Voice Assistant, it may cause instability or reboot loops, 
+#       rather switch the radio off.
+# ------------------------------------------------------------------------------     
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Use at your own risks!
+################################################################################
+esp32_ble:
+  id: ${device_internal_name}_ble
+
+esp32_ble_tracker:
+  id: ${device_internal_name}_ble_tracker
+
+bluetooth_proxy:
+  id: ${device_internal_name}_ble_proxy
+  active: true
