@@ -1,0 +1,129 @@
+################################################################################
+# ESP32-Cam
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   board: !include common/esp32/cam.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Tested OK
+#     - Specs from chip
+#     - Commented out i2c and spi, need to assign pins 
+# ------------------------------------------------------------------------------
+# Referance: 
+# Spec: 
+#     - ESP32
+#     - 2.4 GHz Wi­Fi (802.11 b/g/n/e/i) and Bluetooth 4.2 module
+#     - 520Kb SRAM + 2MB PSRAM
+#     - 4 MB flash
+#     - OV2640 Camera
+#     - MicroSD Cars reader/writer
+#     - 2 × I2C
+#     - 1 × I2S
+#     - 3 x SPI
+#     - 3 x UART
+#     - 8 × ADC
+#     - 1 x LED Fashlight
+#     - 1 x Internal Temperature Sensor
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!
+################################################################################
+esp32:
+  board: esp32cam
+  framework:
+    type: arduino
+    version: latest
+
+# Status led
+status_led:
+  id: ${device_internal_name}_status_led
+  pin:
+    number: GPIO2
+    inverted: false
+
+# I2C settings
+#i2c:
+#  id: ${device_internal_name}_i2c_bus0
+#  sda: GPIO1
+#  scl: GPIO3
+#  scan: true
+
+# UART
+uart:
+  id: ${device_internal_name}_uart_bus0
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 256000
+  parity: NONE
+  stop_bits: 1
+
+# SPI
+#spi:
+#  id: ${device_internal_name}_spi_bus0
+#  clk_pin: GPIO17
+#  mosi_pin: GPIO15
+#  miso_pin: GPIO16
+#  interface: hardware
+
+# Sensors
+sensor:
+  # Internal Temperature Sensor
+  - platform: internal_temperature
+    id: ${device_internal_name}_internal_temperature
+    name: "Internal Temperature"
+    update_interval: ${device_sampling_time}
+    entity_category: diagnostic
+    disabled_by_default: true
+
+# Camera
+esp32_camera:
+  name: Camera
+  id: ${device_internal_name}_camera
+  external_clock:
+    pin: GPIO0
+    frequency: 20MHz
+  i2c_pins:
+    sda: GPIO26
+    scl: GPIO27
+  data_pins: [GPIO5, GPIO18, GPIO19, GPIO21, GPIO36, GPIO39, GPIO34, GPIO35]
+  vsync_pin: GPIO25
+  href_pin: GPIO23
+  pixel_clock_pin: GPIO22
+  power_down_pin: GPIO32
+  resolution: 640x480
+  jpeg_quality: 10
+  max_framerate: 15 fps
+  disabled_by_default : true
+  internal: true
+
+# LED Flashlight
+output:
+  - platform: gpio
+    pin: GPIO4
+    id: ${device_internal_name}_flash_pin
+
+light:
+  - platform: binary
+    id: ${device_internal_name}_flash
+    name: "Flashlight"
+    output: ${device_internal_name}_flash_pin
+    entity_category: config
+    disabled_by_default: true
+
+# Web Server
+esp32_camera_web_server:
+  - port: 8080
+    mode: stream
+  - port: 8081
+    mode: snapshot

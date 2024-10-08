@@ -1,0 +1,114 @@
+################################################################################
+# DFRobot Firebeetle 2 ESP32-E
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   board: !include common/esp32/e_firebeetle_2.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Tested OK
+# ------------------------------------------------------------------------------
+# Referance: https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654
+# Spec: 
+#     - ESP32-E Tensilica LX6 dual-core processor @ 240MHz
+#     - 2.4 GHz Wi­Fi (802.11 b/g/n/d/e/i/k/r)
+#     - Bluetooth 4.2. BR/EDR & BLE
+#     - 4 MB flash
+#     - 520k SRAM
+#     - 1 × I2C
+#     - 1 × I2S
+#     - 1 x SPI
+#     - 1 x UART
+#     - 5 × ADC
+#     - 1 x RGB LED
+#     - 1 x Internal Temperature Sensor
+#     - 1 x GDI
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!
+################################################################################
+esp32:
+  board: esp32dev #dfrobot_firebeetle2_esp32e
+  framework:
+    type: arduino
+    version: latest
+
+# Status led
+status_led:
+  id: ${device_internal_name}_status_led
+  pin:
+    number: GPIO2 #D9
+    inverted: false
+
+# Internal RGB LED
+light:
+  - platform: esp32_rmt_led_strip
+    id: ${device_internal_name}_onboard_rgb_led
+    name: Onboard RGB LED
+    icon: mdi:led-outline
+    rgb_order: GRB
+    pin: GPIO5 #D8
+    num_leds: 1
+    rmt_channel: 0
+    restore_mode: ALWAYS_OFF
+    chipset: ws2812
+    entity_category: config
+    disabled_by_default: true
+
+# I2C settings
+i2c:
+  id: ${device_internal_name}_i2c_bus0
+  sda: GPIO21
+  scl: GPIO22
+  scan: true
+
+# UART
+uart:
+  id: ${device_internal_name}_uart_bus0
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 256000
+  parity: NONE
+  stop_bits: 1
+
+# SPI
+spi:
+  - id: ${device_internal_name}_spi_bus0
+    clk_pin: GPIO18
+    mosi_pin: GPIO23
+    miso_pin: GPIO19
+    interface: hardware
+
+# Sensors
+sensor:
+  # Internal Temperature Sensor
+  - platform: internal_temperature
+    id: ${device_internal_name}_internal_temperature
+    name: Internal Temperature 
+    icon: mdi:coolant-temperature
+    unit_of_measurement: °C
+    device_class: temperature
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
+  
+  - platform: template
+    id: ${device_internal_name}_internal_temperature_f
+    name: Internal Temperature (F)
+    icon: mdi:coolant-temperature
+    unit_of_measurement: °F
+    lambda: return id(${device_internal_name}_internal_temperature).state * 9/5+32;
+    device_class: temperature
+    update_interval: ${device_sampling_time}
+    entity_category: diagnostic
+    disabled_by_default: true
+

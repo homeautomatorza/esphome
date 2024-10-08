@@ -1,0 +1,120 @@
+################################################################################
+# Raspberry Pi Pico W
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   board: !include common/rp2040/pico_w.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 0.1.0 Beta
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: 
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Unfinished 
+#     - Requires more testing
+#     - Yellow LED Credits: 
+#       https://community.home-assistant.io/t/rpi-pico-w-onboard-temperature-sensor-and-onboard-led/564904/3
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!
+################################################################################
+esphome:
+  includes:
+  -  includes/picow_intLED.h
+
+rp2040:
+  board: rpipicow
+  framework:
+    platform_version: https://github.com/maxgerhardt/platform-raspberrypi.git
+
+# Status led
+status_led:
+  pin:
+    number: GPIO32
+
+# I2C
+i2c:
+  id: ${device_internal_name}_i2c_bus0
+  sda: GPIO20
+  scl: GPIO21
+  scan: true
+
+# External Components 
+external_components:
+  source: github://pr#5466
+  components: [ spi ]
+
+# UART
+uart:
+  id: ${device_internal_name}_uart_bus0
+  tx_pin: GPIO16
+  rx_pin: GPIO17
+  baud_rate: 256000
+  parity: NONE
+  stop_bits: 1
+
+# SPI
+spi:
+  id: ${device_internal_name}_spi_bus0
+  clk_pin: GPIO10
+  mosi_pin: GPIO11
+  miso_pin: GPIO12
+
+# Sensors
+sensor:
+  # Internal Temperature Sensor
+  - platform: internal_temperature
+    id: ${device_internal_name}_internal_temperature
+    name: Ambient Temperature
+    update_interval: ${device_sampling_time}
+  
+  - platform: adc
+    pin: VCC
+    name: VCC Voltage
+    entity_category: diagnostic
+
+  - platform: adc
+    id: ${device_internal_name}_core_temperature
+    name: Internal Temperature
+    icon: mdi:thermometer
+    pin: TEMPERATURE
+    unit_of_measurement: "°C"
+    filters:
+      - lambda: return 27 - (x - 0.706f) / 0.001721f;
+    entity_category: diagnostic
+
+# LED
+output:
+  - platform: gpio
+    id: yellow_led
+    pin: GPIO15
+
+  - platform: custom
+    type: binary
+    lambda: |-
+      auto picowLED = new picow_intLED();
+      App.register_component(picowLED);
+      return {picowLED};
+    outputs:
+      id: picowLED
+
+light:
+  - platform: binary
+    name: "Yellow LED"
+    id: ${device_internal_name}_yellow_led_light
+    output: yellow_led
+    internal: true
+  
+  - platform: binary
+    name: "Internal LED"
+    id: ${device_internal_name}_intLED
+    output: picowLED
+    disabled_by_default: true
+

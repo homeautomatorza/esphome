@@ -1,0 +1,83 @@
+################################################################################
+# DFRobot Firebettle Board-ESP32 v4.0
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# -----------------------------------------------------------------------------
+# packages:
+#   board: !include boards/esp32/firebeetle_v4.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Tested OK
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!
+################################################################################
+esp32:
+  board: firebeetle32
+  framework:
+    type: arduino
+    version: latest
+
+# Status led
+status_led:
+  id: ${device_internal_name}_status_led
+  pin:
+    number: GPIO2
+    inverted: false
+
+# I2C settings
+i2c:
+  id: ${device_internal_name}_i2c_bus0
+  sda: GPIO21
+  scl: GPIO22
+  scan: true
+
+# UART
+uart:
+  id: ${device_internal_name}_uart_bus0
+  tx_pin: GPIO25
+  rx_pin: GPIO26
+  baud_rate: 9600
+  parity: NONE
+  stop_bits: 1
+
+# SPI
+spi:
+  id: ${device_internal_name}_spi_bus0
+  clk_pin: GPIO18
+  mosi_pin: GPIO23
+  miso_pin: GPIO19
+  interface: hardware
+
+# Sensors
+sensor:
+  # Internal Temperature Sensor
+  - platform: internal_temperature
+    id: ${device_internal_name}_internal_temperature
+    name: Internal Temperature 
+    icon: mdi:coolant-temperature
+    unit_of_measurement: °C
+    device_class: temperature
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
+  
+  - platform: template
+    id: ${device_internal_name}_internal_temperature_f
+    name: Internal Temperature (F)
+    icon: mdi:coolant-temperature
+    unit_of_measurement: °F
+    lambda: return id(${device_internal_name}_internal_temperature).state * 9/5+32;
+    device_class: temperature
+    update_interval: ${device_sampling_time}
+    entity_category: diagnostic
+    disabled_by_default: true
+

@@ -1,0 +1,77 @@
+################################################################################
+# DFRobot Firebeetle 2 ESP32-C6 v1.0
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   board: !include boards/esp32/c6_firebeetle_2.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 0.1.0 Beta
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes: 
+#       - Internal temperature does not work - Temporarly commented out
+#       - Status LED linked to display backlight, do not use Status LED when 
+#         connected to a display using GDI. 
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+esp32:
+  board: esp32-c6-devkitc-1
+  variant: esp32c6
+  flash_size: 4MB
+  framework:
+    type: esp-idf
+    version: 5.2.1 
+    platform_version: 6.6.0 
+    sdkconfig_options:
+      CONFIG_ESPTOOLPY_FLASHSIZE_4MB: y # Ensures a 4MB flash size
+      CONFIG_OPENTHREAD_ENABLED: n      # Disable Thread!
+      CONFIG_ENABLE_WIFI_STATION: y     # Ensures the WiFi is up
+      CONFIG_USE_MINIMAL_MDNS: y
+
+# Status led
+#status_led:
+#  id: ${device_internal_name}_status_led
+#  pin:
+#    number: GPIO15
+#    inverted: false
+
+# I2C settings
+i2c:
+  - id: ${device_internal_name}_i2c_bus0
+    sda: GPIO19
+    scl: GPIO20
+    scan: true
+
+# UART
+uart:
+  - id: ${device_internal_name}_uart_bus0
+    tx_pin: GPIO16
+    rx_pin: GPIO17
+    baud_rate: 256000
+    parity: NONE
+    stop_bits: 1
+
+# SPI
+spi:
+  id: ${device_internal_name}_spi_bus0
+  clk_pin: GPIO23
+  mosi_pin: GPIO22
+  miso_pin: GPIO21
+  interface: hardware
+
+# Sensors
+#sensor:
+#  # Internal Temperature Sensor
+#  - platform: internal_temperature
+#    id: ${device_internal_name}_internal_temperature
+#    name: "Internal Temperature"
+#    update_interval: ${device_sampling_time}
+#    disabled_by_default: true
